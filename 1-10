@@ -1,0 +1,603 @@
+# 1 
+--------------------------------
+#include <iostream>
+#include <string>
+
+using namespace std;
+int ReadNumber()
+{
+    int Number;
+    cout << "Enter a Number ";
+    cin >> Number;
+    return Number;
+}
+
+string NumberToText(int Number)
+{
+    if (Number == 0)
+    {
+        return "";
+    }
+
+    if (Number >= 1 && Number <= 19)
+    {
+        string arr[] = { "", "One","Two","Three","Four","Five","Six","Seven",  "Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen", "Fifteen","Sixteen","Seventeen","Eighteen","Nineteen" };
+        return arr[Number] + " ";
+    }
+
+    if (Number >= 20 && Number <= 99)
+    {
+        string arr[] = {
+
+        "","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty" ,"Ninety" };
+
+        return arr[Number / 10] + " " + NumberToText(Number % 10);
+    }
+
+    if (Number >= 100 && Number <= 199)
+    {
+        return "One Hundred " + NumberToText(Number % 100);
+    }
+
+    if (Number >= 200 && Number <= 999)
+    {
+        return NumberToText(Number / 100) + "Hundreds " + NumberToText(Number % 100);
+    }
+
+    if (Number >= 1000 && Number <= 1999)
+    {
+        return "One Thousand " + NumberToText(Number % 1000);
+    }
+
+    if (Number >= 2000 && Number <= 999999)
+    {
+        return NumberToText(Number / 1000) + "Thousands " + NumberToText(Number % 1000);
+    }
+
+    if (Number >= 1000000 && Number <= 1999999)
+    {
+        return "One Million " + NumberToText(Number % 1000000);
+    }
+
+    if (Number >= 2000000 && Number <= 999999999)
+    {
+        return NumberToText(Number / 1000000) + "Millions " +  NumberToText(Number % 1000000);
+    }
+
+    if (Number >= 1000000000 && Number <= 1999999999)
+    {
+        return "One Billion " + NumberToText(Number % 1000000000);
+    }
+
+    else
+    {
+        return NumberToText(Number / 1000000000) + "Billions " + NumberToText(Number % 1000000000);
+    }
+}
+
+int main()
+{
+    int number = ReadNumber();
+
+    cout << NumberToText(number) << endl;
+    return 0;
+
+}
+---------------------------------------
+# 2
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+int ReadYear()
+{
+    int Number;
+    cout << "Enter a Number ";
+    cin >> Number;
+    return Number;
+}
+
+bool IsLeapYear(int year) {
+    if (year % 400 == 0)
+        return true;
+
+    else if(year %100 ==0)
+    {
+        return false;
+    }
+
+    else if (year % 4 == 0) {
+        return true;
+
+    }
+    else
+    {
+        return false;
+    }
+}
+int main()
+{
+    int Year = ReadYear();
+
+    if (IsLeapYear(Year))
+        cout << "yes year [" << Year << "] is leap year" << endl;
+    else {
+        cout << "no year [" << Year << "] is not a leap year" << endl;
+    }
+    return 0;
+
+}
+
+
+
+--------------------------------
+# 4
+#include <iostream>
+#include <string>
+
+using namespace std;
+int ReadYear()
+{
+    int Number;
+    cout << "Enter a Number ";
+    cin >> Number;
+    return Number;
+}
+
+bool IsLeapYear(int year) {
+    if (year % 400 == 0)
+        return true;
+
+    else if (year % 100 == 0)
+    {
+        return false;
+    }
+
+    else if (year % 4 == 0) {
+        return true;
+
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int NumberOfDaysInYear(int year) { return IsLeapYear(year) ? 366 : 365; }
+
+int NumberOfHourInYear(int year) { return NumberOfDaysInYear(year) * 24; }
+
+int NumberOfMinutesInYear(int year) { return NumberOfHourInYear(year) * 60;  }
+
+int NumberOfSecondInYear(int year) {return NumberOfMinutesInYear(year) * 60; }
+
+
+int main()
+{
+    int Year = ReadYear();
+
+  
+        cout << "number of day in  year [" << Year << "] is " <<NumberOfDaysInYear(Year) <<endl;
+   
+        cout << "number of Hour in  year [" << Year << "] is " << NumberOfHourInYear(Year) << endl;
+
+            cout << "number of Minutes in  year [" << Year << "] is " << NumberOfMinutesInYear(Year) << endl;
+
+            cout << "number of Second in  year [" << Year << "] is " << NumberOfSecondInYear(Year) << endl;
+
+
+    return 0;
+
+}
+
+
+
+--------------------------------
+# 5
+#include <iostream>
+#include <string>
+
+using namespace std;
+int ReadYear()
+{
+    int Number;
+    cout << "Enter Year Number ";
+    cin >> Number;
+    return Number;
+}
+int ReadMonth() {
+    int Numb;
+    cout << "Enter Month Of Year  ";
+    cin >> Numb;
+    return Numb;
+}
+bool IsLeapYear(int year) {
+    if (year % 400 == 0)
+        return true;
+
+    else if (year % 100 == 0)
+    {
+        return false;
+    }
+
+    else if (year % 4 == 0) {
+        return true;
+
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int NumberOfDaysInMonth(int year ,int month) { 
+    
+    if (month < 1 || month > 12)
+        return 0;
+
+    if (month == 2) {
+
+        return IsLeapYear(year) ? 29 : 28;
+    }
+
+    int array[7] = { 1,3,5,7,8,10,12 };
+
+    for (int i = 1; i <= 7; i++)
+    {
+        if (array[i - 1] == month)
+
+            return 31;
+    }
+    return 30; 
+    
+    
+ }
+
+int NumberOfHourInMonth(int year, int month) { return NumberOfDaysInMonth(year , month) * 24; }
+
+int NumberOfMinutesInMonth(int year, int month) { return NumberOfHourInMonth(year , month) * 60;  }
+
+int NumberOfSecondInMonth(int year, int month) {return NumberOfMinutesInMonth(year , month) * 60; }
+
+
+int main()
+{
+    int Year = ReadYear();
+    int month = ReadMonth();
+  
+        cout << "number of day in  Month [" << Year << "] is " << NumberOfDaysInMonth(Year, month) <<endl;
+   
+        cout << "number of Hour in  Month [" << Year << "] is " << NumberOfHourInMonth(Year , month) << endl;
+
+            cout << "number of Minutes in  Month [" << Year << "] is " << NumberOfMinutesInMonth(Year , month) << endl;
+
+            cout << "number of Second in  Month [" << Year << "] is " << NumberOfSecondInMonth(Year , month) << endl;
+
+
+    return 0;
+
+}
+
+
+
+
+
+--------------------------------
+# 6
+#include <iostream>
+#include <string>
+
+using namespace std;
+int ReadYear()
+{
+    int Number;
+    cout << "Enter Year Number ";
+    cin >> Number;
+    return Number;
+}
+int ReadMonth() {
+    int Numb;
+    cout << "Enter Month Of Year  ";
+    cin >> Numb;
+    return Numb;
+}
+int ReadDay(){
+    int Num;
+    cout << "Enter  Day Of Month  ";
+    cin >> Num;
+    return Num;
+}
+
+int DayOfWeek(int day,int month , int year ) {
+    
+    int a, g, d;
+    a = (14 - month) / 12;
+    g = year - a;
+    d = month + (12 * a) - 2;
+
+    return (day + g + (g / 4) - (g / 100) +(g/400) + ((31 * d) / 12)) % 7;
+
+ }
+
+string DayName(int DayOfWek) {
+    string daynam[] = { "Sun","Mon","Tue","Wed","Thu","Fri","Set" };
+
+    return daynam[DayOfWek];
+}
+
+int main()
+{
+    int Year = ReadYear();
+    int month = ReadMonth();
+    int day = ReadDay();
+
+  
+    cout <<"Date        :" << day << "/" << month << "/" << Year << endl;
+
+    cout <<"Day Orfer   :" << DayOfWeek(day, month, Year) << endl;
+
+    cout << "Day Name    :" << DayName(DayOfWeek(day, month, Year)) << endl;
+
+
+        
+
+
+    return 0;
+
+}
+
+
+
+
+
+--------------------------------
+# 7
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int ReadYear()
+{
+    int Number;
+    cout << "Enter Year Number: ";
+    cin >> Number;
+    return Number;
+}
+
+int ReadMonth() {
+    int Numb;
+    cout << "Enter Month Of Year: ";
+    cin >> Numb;
+    return Numb;
+}
+
+bool IsLeapYear(int year) {
+    if (year % 400 == 0)
+        return true;
+    else if (year % 100 == 0)
+        return false;
+    else if (year % 4 == 0)
+        return true;
+    else
+        return false;
+}
+
+int NumberOfDaysInMonth(int year, int month) {
+    if (month < 1 || month > 12)
+        return 0;
+
+    if (month == 2) {
+        return IsLeapYear(year) ? 29 : 28;
+    }
+
+    int array[7] = { 1, 3, 5, 7, 8, 10, 12 };
+
+    for (int i = 0; i < 7; i++) {
+        if (array[i] == month)
+            return 31;
+    }
+
+    return 30;
+}
+
+int DayOfWeek(int day, int month, int year) {
+    int a, g, d;
+    a = (14 - month) / 12;
+    g = year - a;
+    d = month + (12 * a) - 2;
+    return (day + g + (g / 4) - (g / 100) + (g / 400) + ((31 * d) / 12)) % 7;
+}
+
+string DayName(int DayOfWek) {
+    string daynam[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+    return daynam[DayOfWek];
+}
+
+string MonthName(int monthnam) {
+    string month[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+    return month[monthnam - 1];
+}
+
+void PrintCalender(int month, int year) {
+    int numofday;
+    int curent = DayOfWeek(1, month, year);
+    numofday = NumberOfDaysInMonth(year, month);
+
+    printf("\n  _______________%s_______________\n\n", MonthName(month).c_str());
+    printf(" Sun Mon Tue Wed Thu Fri Sat\n");
+
+    int i;
+    for (i = 0; i < curent; i++) {
+        printf("    ");
+    }
+
+    for (int j = 1; j <= numofday; j++) {
+        printf("%5d", j);
+        if (++i == 7) {
+            i = 0;
+            printf("\n");
+        }
+    }
+    printf("\n _________________________________\n");
+}
+
+int main() {
+    int Year = ReadYear();
+    int month = ReadMonth();
+
+    PrintCalender(month, Year);
+
+    return 0;
+}
+
+--------------------------------
+# 8
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int ReadYear() {
+    int Year;
+    cout << "Enter Year Number: ";
+    cin >> Year;
+    return Year;
+}
+
+bool IsLeapYear(int year) {
+    return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+}
+
+int NumberOfDaysInMonth(int year, int month) {
+    if (month == 2) 
+        return IsLeapYear(year) ? 29 : 28;
+
+    int longMonths[] = { 1, 3, 5, 7, 8, 10, 12 };
+
+    for (int m : longMonths) {
+        if (m == month) return 31;
+    }
+    return 30;
+}
+
+int DayOfWeek(int day, int month, int year) {
+
+    int a = (14 - month) / 12;
+    int y = year - a;
+    int m = month + (12 * a) - 2;
+
+    return (day + y + (y / 4) - (y / 100) + (y / 400) + (31 * m / 12)) % 7;
+}
+
+string MonthName(int month) {
+    string months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+    return months[month - 1];
+}
+
+void PrintMonth(int month, int year) {
+    int days = NumberOfDaysInMonth(year, month);
+
+    int startDay = DayOfWeek(1, month, year);
+
+    printf("\n  _______________%s_______________\n\n", MonthName(month).c_str());
+    printf(" Sun Mon Tue Wed Thu Fri Sat\n");
+
+    for (int i = 0; i < startDay; i++) {
+        printf("    ");
+    }
+
+    int i;
+    for (i = 1; i <= days; i++) {
+        printf("%5d", i);
+        if ((startDay + i) % 7 == 0) {
+            printf("\n");
+        }
+    }
+    if ((startDay + days) % 7 != 0) printf("\n");
+
+    printf(" _________________________________\n");
+}
+
+void PrintYearCalendar(int year) {
+
+    for (int month = 1; month <= 12; month++) {
+
+        PrintMonth(month, year);
+    }
+}
+
+int main() {
+    int Year = ReadYear();
+    PrintYearCalendar(Year);
+    return 0;
+}
+
+--------------------------------
+# 9
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int ReadYear()
+{
+    int Number;
+    cout << "Enter Year Number ";
+    cin >> Number;
+    return Number;
+}
+int ReadMonth() {
+    int Numb;
+    cout << "Enter Month Of Year  ";
+    cin >> Numb;
+    return Numb;
+}
+int ReadDay() {
+    int Num;
+    cout << "Enter  Day Of Month  ";
+    cin >> Num;
+    return Num;
+}
+bool IsLeapYear(int year) {
+    return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+}
+
+int NumberOfDaysInMonth(int year, int month) {
+    if (month == 2) 
+        return IsLeapYear(year) ? 29 : 28;
+
+    int longMonths[] = { 1, 3, 5, 7, 8, 10, 12 };
+
+    for (int m : longMonths) {
+        if (m == month) return 31;
+    }
+    return 30;
+}
+int NumberOfDaysFromTheBeginingOfTheYear(int Day, int Month, int Year) {
+    int TotalDays = 0;
+    for (int i = 1; i <= Month - 1; i++) {
+        TotalDays += NumberOfDaysInMonth(Year, i);
+    }
+    TotalDays += Day;
+    return TotalDays;
+}
+
+
+int main() {
+    int Year = ReadYear();
+    int month = ReadMonth();
+    int day = ReadDay();
+
+    cout << "Number of Days from the begining of the year is " << NumberOfDaysFromTheBeginingOfTheYear(day, month, Year);
+
+
+    return 0;
+}
+
+--------------------------------
+
+
+
