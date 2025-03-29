@@ -1,0 +1,1267 @@
+#include <iostream>
+using namespace std;
+struct stDate
+{
+	short Year;
+	short Month;
+	short Day;
+};
+bool isLeapYear(short Year)
+{
+	return (Year % 4 == 0 && Year % 100 != 0) || (Year % 400 == 0);
+}
+bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
+{
+	return (Date1.Year < Date2.Year) ? true : ((Date1.Year ==Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month ==Date2.Month ? Date1.Day < Date2.Day : false)) : false);
+}
+short NumberOfDaysInAMonth(short Month, short Year)
+{
+	if (Month < 1 || Month>12)
+		return 0;
+
+	int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+	return (Month == 2) ? (isLeapYear(Year) ? 29 : 28) :days[Month - 1];
+}
+bool IsLastDayInMonth(stDate Date)
+{
+	return (Date.Day == NumberOfDaysInAMonth(Date.Month,Date.Year));
+}
+bool IsLastMonthInYear(short Month)
+{
+	return (Month == 12);
+}
+
+stDate IncreaseDateByOneDay(stDate Date)
+{
+	if (IsLastDayInMonth(Date))
+	{
+		if (IsLastMonthInYear(Date.Month))
+		{
+			Date.Month = 1;
+			Date.Day = 1;
+			Date.Year++;
+		}
+		else
+		{
+			Date.Day = 1;
+			Date.Month++;
+		}
+	}
+	else
+	{
+		Date.Day++;
+	}
+	return Date;
+}
+short DayOfWeekOrder(short Day, short Month, short Year)
+{
+	short a, y, m;
+	a = (14 - Month) / 12;
+	y = Year - a;
+	m = Month + (12 * a) - 2;
+	
+	return (Day + y + (y / 4) - (y / 100) + (y / 400) + ((31 * m)/ 12)) % 7;
+}
+short DayOfWeekOrder(stDate Date)
+{
+	return DayOfWeekOrder(Date.Day, Date.Month, Date.Year);
+}
+string DayShortName(short DayOfWeekOrder)
+{
+	string arrDayNames[] = {
+	"Sun","Mon","Tue","Wed","Thu","Fri","Sat" };
+	return arrDayNames[DayOfWeekOrder];
+}
+bool IsWeekEnd(stDate Date)
+{
+	short DayIndex = DayOfWeekOrder(Date.Day, Date.Month,Date.Year);
+	return (DayIndex == 5 || DayIndex == 6);
+}
+bool IsBusinessDay(stDate Date)
+{
+	
+		return !IsWeekEnd(Date);
+}
+short ReadDay()
+{
+	short Day;
+	cout << "enter a Day ";
+	cin >> Day;
+	return Day;
+}
+short ReadMonth()
+{
+	short Month;
+	cout << "enter a Month";
+	cin >> Month;
+	return Month;
+}
+short ReadYear()
+{
+	short Year;
+	cout << "enter a Year ";
+	cin >> Year;
+	return Year;
+}
+stDate ReadFullDate()
+{
+	stDate Date;
+	Date.Day = ReadDay();
+	Date.Month = ReadMonth();
+	Date.Year = ReadYear();
+	return Date;
+}
+short CalculateVacationDays(stDate DateFrom, stDate DateTo)
+{
+	short DaysCount = 0;
+	while (IsDate1BeforeDate2(DateFrom, DateTo))
+	{
+		if (IsBusinessDay(DateFrom))
+			DaysCount++;
+		DateFrom = IncreaseDateByOneDay(DateFrom);
+	}
+	return DaysCount;
+}
+	int main()
+	{
+		cout << "\nVacation Starts: ";
+
+		stDate DateFrom = ReadFullDate();
+
+		cout << "\nVacation Ends: ";
+
+		stDate DateTo = ReadFullDate();
+
+		cout << "\nVaction From: " <<DayShortName(DayOfWeekOrder(DateFrom)) << " , "<< DateFrom.Day << "/" << DateFrom.Month << "/" <<DateFrom.Year << endl;
+		
+		cout << "Vaction To: " << DayShortName(DayOfWeekOrder(DateTo))<< " , "<< DateTo.Day << "/" << DateTo.Month << "/" << DateTo.Year<< endl;
+		
+		cout << "\n\nActucal Vacation Days is: " <<CalculateVacationDays(DateFrom, DateTo);
+
+		return 0;
+	}
+------------------------------------------------------
+# 55
+#include <iostream>
+using namespace std;
+
+struct stDate
+{
+    short Year;
+    short Month;
+    short Day;
+
+};
+
+bool isLeapYear(short Year)
+{
+    return (Year % 4 == 0 && Year % 100 != 0) || (Year % 400 == 0);
+}
+
+bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
+{
+    return  (Date1.Year < Date2.Year) ? true : ((Date1.Year == Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month == Date2.Month ? Date1.Day < Date2.Day : false)) : false);
+}
+
+short NumberOfDaysInAMonth(short Month, short Year)
+{
+
+    if (Month < 1 || Month>12)
+        return  0;
+
+    int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+    return (Month == 2) ? (isLeapYear(Year) ? 29 : 28) : days[Month - 1];
+
+}
+
+bool IsLastDayInMonth(stDate Date)
+{
+
+    return (Date.Day == NumberOfDaysInAMonth(Date.Month, Date.Year));
+
+}
+
+bool IsLastMonthInYear(short Month)
+{
+    return (Month == 12);
+}
+
+stDate IncreaseDateByOneDay(stDate Date)
+{
+    if (IsLastDayInMonth(Date))
+    {
+        if (IsLastMonthInYear(Date.Month))
+        {
+            Date.Month = 1;
+            Date.Day = 1;
+            Date.Year++;
+        }
+        else
+        {
+            Date.Day = 1;
+            Date.Month++;
+        }
+    }
+    else
+    {
+        Date.Day++;
+    }
+
+    return Date;
+}
+
+short DayOfWeekOrder(short Day, short Month, short Year)
+{
+    short a, y, m;
+    a = (14 - Month) / 12;
+    y = Year - a;
+    m = Month + (12 * a) - 2;
+ 
+    return (Day + y + (y / 4) - (y / 100) + (y / 400) + ((31 * m) / 12)) % 7;
+}
+
+short DayOfWeekOrder(stDate Date)
+{
+    return DayOfWeekOrder(Date.Day, Date.Month, Date.Year);
+
+}
+
+string DayShortName(short DayOfWeekOrder)
+{
+    string arrDayNames[] = { "Sun","Mon","Tue","Wed","Thu","Fri","Sat" };
+
+    return arrDayNames[DayOfWeekOrder];
+
+}
+
+bool IsWeekEnd(stDate Date)
+{
+
+    short DayIndex = DayOfWeekOrder(Date.Day, Date.Month, Date.Year);
+
+    return  (DayIndex == 5 || DayIndex == 6);
+}
+
+bool IsBusinessDay(stDate Date)
+{
+    
+    return !IsWeekEnd(Date);
+
+}
+
+short ReadDay()
+{
+    short Day;
+    cout << "\nenter a Day ";
+    cin >> Day;
+    return Day;
+}
+
+short ReadMonth()
+{
+    short Month;
+    cout << "enter a Month ";
+    cin >> Month;
+    return Month;
+}
+
+short ReadYear()
+{
+    short Year;
+    cout << "enter a Year ";
+    cin >> Year;
+    return Year;
+}
+
+stDate ReadFullDate()
+{
+    stDate Date;
+
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+
+    return Date;
+}
+
+
+stDate CalculateVacationReturnDate(stDate DateFrom, short VacationDays)
+{
+
+    short WeekEndCounter = 0;
+
+  
+    while (IsWeekEnd(DateFrom))
+    {
+        DateFrom = IncreaseDateByOneDay(DateFrom);
+    }
+
+
+    for (short i = 1; i <= VacationDays + WeekEndCounter; i++)
+    {
+
+        if (IsWeekEnd(DateFrom))
+            WeekEndCounter++;
+
+        DateFrom = IncreaseDateByOneDay(DateFrom);
+    }
+
+    while (IsWeekEnd(DateFrom))
+    {
+        DateFrom = IncreaseDateByOneDay(DateFrom);
+    }
+
+    return DateFrom;
+}
+
+short ReadVacationDays()
+{
+    short Days;
+    cout << "enter vacation day ";
+    cin >> Days;
+    return Days;
+}
+
+int main()
+{
+    cout << "\nVacation Starts: ";
+    stDate DateFrom = ReadFullDate();
+
+    short VacationDays = ReadVacationDays();
+
+    stDate ReturnDate = CalculateVacationReturnDate(DateFrom, VacationDays);
+
+    cout << "\nReturn Date: " << DayShortName(DayOfWeekOrder(ReturnDate)) << " , "<< ReturnDate.Day << "/" << ReturnDate.Month << "/" << ReturnDate.Year << endl;
+
+
+    return 0;
+}
+--------------------------------------
+# 56
+#include <iostream>
+using namespace std;
+
+struct stDate
+{
+    short Year;
+    short Month;
+    short Day;
+
+};
+short ReadDay()
+{
+    short Day;
+    cout << "\nenter a Day ";
+    cin >> Day;
+    return Day;
+}
+short ReadMonth()
+{
+    short Month;
+    cout << "enter a Month ";
+    cin >> Month;
+    return Month;
+}
+short ReadYear()
+{
+    short Year;
+    cout << "enter a Year ";
+    cin >> Year;
+    return Year;
+}
+stDate ReadFullDate()
+{
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return Date;
+}
+bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year < Date2.Year) ? true : ((Date1.Year ==Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month ==Date2.Month ? Date1.Day < Date2.Day : false)) : false);
+}
+bool IsDate1EqualDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year == Date2.Year) ? ((Date1.Month ==Date2.Month) ? ((Date1.Day == Date2.Day) ? true : false) : false): false;
+}
+bool IsDate1AfterDate2(stDate Date1, stDate Date2)
+{
+    return (!IsDate1BeforeDate2(Date1, Date2) &&!IsDate1EqualDate2(Date1, Date2));
+}
+
+
+int main()
+{
+    cout << "enter Date1:";
+    stDate Date1 = ReadFullDate();
+    cout << "\nenter Date2:";
+    stDate Date2 = ReadFullDate();
+    if (IsDate1AfterDate2(Date1, Date2))
+        cout << "\nYes Date1 is After Date2"<<endl;
+    else
+        cout << "No Date1 is not After Date2"<<endl;
+
+
+    return 0;
+}
+----------------------------------------------
+57
+#include <iostream>
+using namespace std;
+enum enDateCompare { Before = -1, Equal = 0, After = 1 };
+
+struct stDate
+{
+    short Year;
+    short Month;
+    short Day;
+
+};
+short ReadDay()
+{
+    short Day;
+    cout << "\nenter a Day ";
+    cin >> Day;
+    return Day;
+}
+short ReadMonth()
+{
+    short Month;
+    cout << "enter a Month ";
+    cin >> Month;
+    return Month;
+}
+short ReadYear()
+{
+    short Year;
+    cout << "enter a Year ";
+    cin >> Year;
+    return Year;
+}
+stDate ReadFullDate()
+{
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return Date;
+}
+bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year < Date2.Year) ? true : ((Date1.Year ==Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month ==Date2.Month ? Date1.Day < Date2.Day : false)) : false);
+}
+bool IsDate1EqualDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year == Date2.Year) ? ((Date1.Month ==Date2.Month) ? ((Date1.Day == Date2.Day) ? true : false) : false): false;
+}
+bool IsDate1AfterDate2(stDate Date1, stDate Date2)
+{
+    return (!IsDate1BeforeDate2(Date1, Date2) &&!IsDate1EqualDate2(Date1, Date2));
+}
+enDateCompare CompareDates(stDate Date1, stDate Date2)
+{
+    if (IsDate1BeforeDate2(Date1, Date2))
+        return enDateCompare::Before;
+
+    if (IsDate1EqualDate2(Date1, Date2))
+
+        return enDateCompare::Equal;
+    
+
+    return enDateCompare::After;
+}
+
+
+int main()
+{
+    cout << "enter Date1:"<<endl;
+    stDate Date1 = ReadFullDate();
+    cout << "\nenter Date2:";
+    stDate Date2 = ReadFullDate();
+   
+    cout << "\nCompare Result = " << CompareDates(Date1, Date2);
+
+    return 0;
+}
+---------------------------------
+58
+#include <iostream>
+using namespace std;
+enum enDateCompare { Before = -1, Equal = 0, After = 1 };
+
+struct stDate
+{
+    short Year;
+    short Month;
+    short Day;
+
+};
+struct stPeriod
+{
+    stDate StartDate;
+    stDate EndDate;
+};
+short ReadDay()
+{
+    short Day;
+    cout << "\nenter a Day ";
+    cin >> Day;
+    return Day;
+}
+short ReadMonth()
+{
+    short Month;
+    cout << "enter a Month ";
+    cin >> Month;
+    return Month;
+}
+short ReadYear()
+{
+    short Year;
+    cout << "enter a Year ";
+    cin >> Year;
+    return Year;
+}
+stDate ReadFullDate()
+{
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return Date;
+}
+stPeriod ReadPeriod()
+{
+    stPeriod Period;
+    cout << "\nEnter Start Date:\n";
+    Period.StartDate = ReadFullDate();
+    cout << "\nEnter End Date:\n";
+    Period.EndDate = ReadFullDate();
+    return Period;
+}
+bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year < Date2.Year) ? true : ((Date1.Year ==Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month ==Date2.Month ? Date1.Day < Date2.Day : false)) : false);
+}
+bool IsDate1EqualDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year == Date2.Year) ? ((Date1.Month ==Date2.Month) ? ((Date1.Day == Date2.Day) ? true : false) : false): false;
+}
+bool IsDate1AfterDate2(stDate Date1, stDate Date2)
+{
+    return (!IsDate1BeforeDate2(Date1, Date2) &&!IsDate1EqualDate2(Date1, Date2));
+}
+enDateCompare CompareDates(stDate Date1, stDate Date2)
+{
+    if (IsDate1BeforeDate2(Date1, Date2))
+        return enDateCompare::Before;
+
+    if (IsDate1EqualDate2(Date1, Date2))
+        return enDateCompare::Equal;
+
+    return enDateCompare::After;
+}
+
+bool IsOverlapPeriods(stPeriod Period1, stPeriod Period2)
+{
+    if (CompareDates(Period2.EndDate, Period1.StartDate) ==enDateCompare::Before|| CompareDates(Period2.StartDate, Period1.EndDate) == enDateCompare::After )
+        return false;
+
+    else
+        return true;
+}
+
+int main()
+{
+    cout << "enter period 1:"<<endl;
+    stPeriod Period1 = ReadPeriod();
+    cout << "\nenter period 2:";
+    stPeriod Period2 = ReadPeriod();
+
+    if (IsOverlapPeriods(Period1, Period2))
+        cout << "\nYes, Periods Overlap\n";
+    else
+        cout << "\nNo, Periods do not Overlap\n";
+
+    return 0;
+}
+--------------------------------------
+59
+#include <iostream>
+using namespace std;
+enum enDateCompare { Before = -1, Equal = 0, After = 1 };
+
+struct stDate
+{
+    short Year;
+    short Month;
+    short Day;
+
+};
+struct stPeriod
+{
+    stDate StartDate;
+    stDate EndDate;
+};
+short ReadDay()
+{
+    short Day;
+    cout << "\nenter a Day ";
+    cin >> Day;
+    return Day;
+}
+short ReadMonth()
+{
+    short Month;
+    cout << "enter a Month ";
+    cin >> Month;
+    return Month;
+}
+short ReadYear()
+{
+    short Year;
+    cout << "enter a Year ";
+    cin >> Year;
+    return Year;
+}
+stDate ReadFullDate()
+{
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return Date;
+}
+stPeriod ReadPeriod()
+{
+    stPeriod Period;
+    cout << "\nEnter Start Date:\n";
+    Period.StartDate = ReadFullDate();
+    cout << "\nEnter End Date:\n";
+    Period.EndDate = ReadFullDate();
+    return Period;
+}
+bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year < Date2.Year) ? true : ((Date1.Year ==Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month ==Date2.Month ? Date1.Day < Date2.Day : false)) : false);
+}
+bool IsDate1EqualDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year == Date2.Year) ? ((Date1.Month ==Date2.Month) ? ((Date1.Day == Date2.Day) ? true : false) : false): false;
+}
+bool IsDate1AfterDate2(stDate Date1, stDate Date2)
+{
+    return (!IsDate1BeforeDate2(Date1, Date2) &&!IsDate1EqualDate2(Date1, Date2));
+}
+bool isLeapYear(short Year)
+{
+    return (Year % 4 == 0 && Year % 100 != 0) || (Year % 400 == 0);
+}
+short NumberOfDaysInAMonth(short Month, short Year) {
+    if (Month < 1 || Month>12)
+        return 0;
+
+    int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+
+    return (Month == 2) ? (isLeapYear(Year) ? 29 : 28) : days[Month - 1];
+}
+
+bool IsLastDayInMonth(stDate Date)
+{
+    return (Date.Day == NumberOfDaysInAMonth(Date.Month,Date.Year));
+}
+bool IsLastMonthInYear(short Month)
+{
+    return (Month == 12);
+}
+stDate IncreaseDateByOneDay(stDate Date)
+{
+    if (IsLastDayInMonth(Date))
+    {
+        if (IsLastMonthInYear(Date.Month))
+        {
+            Date.Month = 1;
+            Date.Day = 1;
+            Date.Year++;
+        }
+        else
+        {
+            Date.Day = 1;
+            Date.Month++;
+        }
+    }
+    else
+    {
+        Date.Day++;
+    }
+    return Date;
+}
+
+int GetDifferenceInDays(stDate Date1, stDate Date2, bool IncludeEndDay = false)
+{
+    int Days = 0;
+    while (IsDate1BeforeDate2(Date1, Date2))
+    {
+        Days++;
+        Date1 = IncreaseDateByOneDay(Date1);
+    }
+    return IncludeEndDay ? ++Days : Days;
+}
+int PeriodLengthInDays(stPeriod Period, bool IncludeEndDate =false)
+{
+    return GetDifferenceInDays(Period.StartDate, Period.EndDate, IncludeEndDate);
+}
+
+int main()
+{
+    cout << "enter Period 1:";
+
+    stPeriod Period1 = ReadPeriod();
+
+    cout << "\nPeriod Length is: " << PeriodLengthInDays(Period1);
+    cout << "\nPeriod Length (Including End Date) is: " <<PeriodLengthInDays(Period1, true);
+    
+    return 0;
+}
+------------------------------------------
+60
+#include <iostream>
+using namespace std;
+enum enDateCompare { Before = -1, Equal = 0, After = 1 };
+
+struct stDate
+{
+    short Year;
+    short Month;
+    short Day;
+
+};
+struct stPeriod
+{
+    stDate StartDate;
+    stDate EndDate;
+};
+short ReadDay()
+{
+    short Day;
+    cout << "\nenter a Day ";
+    cin >> Day;
+    return Day;
+}
+short ReadMonth()
+{
+    short Month;
+    cout << "enter a Month ";
+    cin >> Month;
+    return Month;
+}
+short ReadYear()
+{
+    short Year;
+    cout << "enter a Year ";
+    cin >> Year;
+    return Year;
+}
+stDate ReadFullDate()
+{
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return Date;
+}
+stPeriod ReadPeriod()
+{
+    stPeriod Period;
+    cout << "\nEnter Start Date:\n";
+    Period.StartDate = ReadFullDate();
+    cout << "\nEnter End Date:\n";
+    Period.EndDate = ReadFullDate();
+    return Period;
+}
+
+bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year < Date2.Year) ? true : ((Date1.Year ==Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month ==Date2.Month ? Date1.Day < Date2.Day : false)) : false);
+}
+bool IsDate1EqualDate2(stDate Date1, stDate Date2)
+{
+    return (Date1.Year == Date2.Year) ? ((Date1.Month ==Date2.Month) ? ((Date1.Day == Date2.Day) ? true : false) : false): false;
+}
+bool IsDate1AfterDate2(stDate Date1, stDate Date2)
+{
+    return (!IsDate1BeforeDate2(Date1, Date2) &&!IsDate1EqualDate2(Date1, Date2));
+}
+
+
+enDateCompare CompareDates(stDate Date1, stDate Date2)
+{
+    if (IsDate1BeforeDate2(Date1, Date2))
+        return enDateCompare::Before;
+    if (IsDate1EqualDate2(Date1, Date2))
+        return enDateCompare::Equal;
+
+    return enDateCompare::After;
+}
+bool isDateInPeriod(stDate Date, stPeriod Period)
+{
+    return !(CompareDates(Date, Period.StartDate) == enDateCompare::Before || CompareDates(Date, Period.EndDate) == enDateCompare::After);
+}
+
+
+
+int main()
+{
+    cout << "enter Period :";
+
+    stPeriod Period = ReadPeriod();
+
+    cout << "\nEnter Date to check:\n";
+    stDate Date = ReadFullDate();
+
+    if (isDateInPeriod(Date, Period))
+
+        cout << "\nYes, Date is within period\n";
+    else
+        cout << "\nNo, Date is not within period\n";
+
+    
+    return 0;
+}
+---------------------------------------
+61
+#include <iostream>
+using namespace std;
+struct stDate
+{
+	short Year;
+	short Month;
+	short Day;
+};
+struct stPeriod
+{
+	stDate StartDate;
+	stDate EndDate;
+};
+bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
+{
+	return (Date1.Year < Date2.Year) ? true : ((Date1.Year ==
+		Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month ==
+			Date2.Month ? Date1.Day < Date2.Day : false)) : false);
+}
+bool IsDate1EqualDate2(stDate Date1, stDate Date2)
+{
+	return (Date1.Year == Date2.Year) ? ((Date1.Month ==
+		Date2.Month) ? ((Date1.Day == Date2.Day) ? true : false) : false)
+		: false;
+}
+bool IsDate1AfterDate2(stDate Date1, stDate Date2)
+{
+	return (!IsDate1BeforeDate2(Date1, Date2) &&
+		!IsDate1EqualDate2(Date1, Date2));
+}
+bool isLeapYear(short Year)
+{
+	return (Year % 4 == 0 && Year % 100 != 0) || (Year % 400 == 0);
+}
+short NumberOfDaysInAMonth(short Month, short Year)
+{
+	if (Month < 1 || Month>12)
+		return 0;
+	int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+	return (Month == 2) ? (isLeapYear(Year) ? 29 : 28) :
+		days[Month - 1];
+}
+bool IsLastDayInMonth(stDate Date)
+{
+	return (Date.Day == NumberOfDaysInAMonth(Date.Month,
+		Date.Year));
+}
+bool IsLastMonthInYear(short Month)
+{
+	return (Month == 12);
+}
+stDate IncreaseDateByOneDay(stDate Date)
+{
+	if (IsLastDayInMonth(Date))
+	{
+		if (IsLastMonthInYear(Date.Month))
+		{
+			Date.Month = 1;
+			Date.Day = 1;
+			Date.Year++;
+		}
+		else
+		{
+			Date.Day = 1;
+			Date.Month++;
+		}
+	}
+	else
+	{
+		Date.Day++;
+	}
+	return Date;
+}
+int GetDifferenceInDays(stDate Date1, stDate Date2, bool
+	IncludeEndDay = false)
+{
+	int Days = 0;
+	while (IsDate1BeforeDate2(Date1, Date2))
+	{
+		Days++;
+		Date1 = IncreaseDateByOneDay(Date1);
+	}
+	return IncludeEndDay ? ++Days : Days;
+}
+enum enDateCompare { Before = -1, Equal = 0, After = 1 };
+enDateCompare CompareDates(stDate Date1, stDate Date2)
+{
+	if (IsDate1BeforeDate2(Date1, Date2))
+		return enDateCompare::Before;
+	if (IsDate1EqualDate2(Date1, Date2))
+		return enDateCompare::Equal;
+	
+	return enDateCompare::After;
+}
+int PeriodLengthInDays(stPeriod Period, bool IncludeEndDate =
+	false)
+{
+	return GetDifferenceInDays(Period.StartDate, Period.EndDate,
+		IncludeEndDate);
+}
+bool IsOverlapPeriods(stPeriod Period1, stPeriod Period2)
+{
+	if (
+		CompareDates(Period2.EndDate, Period1.StartDate) ==
+		enDateCompare::Before
+		||
+		CompareDates(Period2.StartDate, Period1.EndDate) ==
+		enDateCompare::After
+		)
+		return false;
+	else
+		return true;
+}
+bool isDateInPeriod(stDate Date, stPeriod Period)
+{
+	return !(CompareDates(Date, Period.StartDate) ==
+		enDateCompare::Before || CompareDates(Date, Period.EndDate) ==
+		enDateCompare::After);
+}
+int CountOverlapDays(stPeriod Period1, stPeriod Period2)
+{
+	int Period1Length = PeriodLengthInDays(Period1, true);
+	int Period2Length = PeriodLengthInDays(Period2, true);
+	int OverlapDays = 0;
+	if (!IsOverlapPeriods(Period1, Period2))
+		return 0;
+	if (Period1Length < Period2Length)
+	{
+		while (IsDate1BeforeDate2(Period1.StartDate,
+			Period1.EndDate))
+		{
+			if (isDateInPeriod(Period1.StartDate, Period2))
+				OverlapDays++;
+			Period1.StartDate =
+				IncreaseDateByOneDay(Period1.StartDate);
+		}
+	}
+	else
+	{
+		while (IsDate1BeforeDate2(Period2.StartDate,
+			Period2.EndDate))
+		{
+			if (isDateInPeriod(Period2.StartDate, Period1))
+				OverlapDays++;
+			Period2.StartDate =
+				IncreaseDateByOneDay(Period2.StartDate);
+		}
+	}
+	return OverlapDays;
+}
+short ReadDay()
+{
+	short Day;
+	cout << "\nPlease enter a Day? ";
+	cin >> Day;
+	return Day;
+}
+short ReadMonth()
+{
+	short Month;
+	cout << "Please enter a Month? ";
+	cin >> Month;
+	return Month;
+}
+short ReadYear()
+{
+	short Year;
+	cout << "Please enter a Year? ";
+	cin >> Year;
+	return Year;
+}
+stDate ReadFullDate()
+{
+	stDate Date;
+	Date.Day = ReadDay();
+	Date.Month = ReadMonth();
+	Date.Year = ReadYear();
+	return Date;
+}
+stPeriod ReadPeriod()
+{
+	stPeriod Period;
+	cout << "\nEnter Start Date:\n";
+	Period.StartDate = ReadFullDate();
+	cout << "\nEnter End Date:\n";
+	Period.EndDate = ReadFullDate();
+	return Period;
+}
+int main()
+{
+	cout << "\nEnter Period 1 :";
+	stPeriod Period1 = ReadPeriod();
+	cout << "\nEnter Period 2 :";
+	stPeriod Period2 = ReadPeriod();
+	cout << "\nOverlap Days Count Is: " <<
+		CountOverlapDays(Period1, Period2);
+	return 0;
+}
+-------------------------------
+62
+#include <iostream>
+using namespace std;
+struct stDate
+{
+	short Year;
+	short Month;
+	short Day;
+};
+bool isLeapYear(short Year)
+{
+	return (Year % 4 == 0 && Year % 100 != 0) || (Year % 400 == 0);
+}
+short NumberOfDaysInAMonth(short Month, short Year)
+{
+	if (Month < 1 || Month>12)
+		return 0;
+	int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+	return (Month == 2) ? (isLeapYear(Year) ? 29 : 28) :
+		days[Month - 1];
+}
+bool IsValidDate(stDate Date)
+{
+	if (Date.Day < 1 || Date.Day>31)
+		return false;
+	if (Date.Month < 1 || Date.Month>12)
+		return false;
+	if (Date.Month == 2)
+	{
+		if (isLeapYear(Date.Year))
+		{
+			if (Date.Day > 29)
+				return false;
+		}
+		else
+		{
+			if (Date.Day > 28)
+				return false;
+		}
+	}
+	short DaysInMonth = NumberOfDaysInAMonth(Date.Month,
+		Date.Year);
+	if (Date.Day > DaysInMonth)
+		return false;
+	return true;
+}
+short ReadDay()
+{
+	short Day;
+	cout << "\nPlease enter a Day? ";
+	cin >> Day;
+	return Day;
+}
+short ReadMonth()
+{
+	short Month;
+	cout << "Please enter a Month? ";
+	cin >> Month;
+	return Month;
+}
+short ReadYear()
+{
+	short Year;
+	cout << "Please enter a Year? ";
+	cin >> Year;
+	return Year;
+}
+stDate ReadFullDate()
+{
+	stDate Date;
+	Date.Day = ReadDay();
+	Date.Month = ReadMonth();
+	Date.Year = ReadYear();
+	return Date;
+}
+int main()
+{
+	stDate Date1 = ReadFullDate();
+	if (IsValidDate(Date1))
+		cout << "\nYes, Date is a valide date.\n";
+	else
+		cout << "\nNo, Date is a NOT valide date\n";
+	return 0;
+}
+--------------------------------------
+63
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+struct stDate
+{
+	short Year;
+	short Month;
+	short Day;
+};
+vector<string> SplitString(string S1, string Delim)
+{
+	vector<string> vString;
+	short pos = 0;
+	string sWord; 
+	
+	while ((pos = S1.find(Delim)) != std::string::npos)
+	{
+		sWord = S1.substr(0, pos); 
+		if (sWord != "")
+		{
+			vString.push_back(sWord);
+		}
+		S1.erase(0, pos + Delim.length());
+	}
+	if (S1 != "")
+	{
+		vString.push_back(S1); 
+	}
+	return vString;
+}
+string DateToString(stDate Date)
+{
+	return to_string(Date.Day) + "/" + to_string(Date.Month) +
+		"/" + to_string(Date.Year);
+}
+stDate StringToDate(string DateString)
+{
+	stDate Date;
+	vector <string> vDate;
+	vDate = SplitString(DateString, "/");
+	Date.Day = stoi(vDate[0]);
+	Date.Month = stoi(vDate[1]);
+	Date.Year = stoi(vDate[2]);
+	return Date;
+}
+string ReadStringDate(string Message)
+{
+	string DateString;
+	cout << Message;
+	getline(cin >> ws, DateString);
+	return DateString;
+}
+int main()
+{
+	string DateString = ReadStringDate("\nPlease Enter Datedd / mm / yyyy  ");
+		stDate Date = StringToDate(DateString);
+	cout << "\nDay:" << Date.Day << endl;
+	cout << "Month:" << Date.Month << endl;
+	cout << "Year:" << Date.Year << endl;
+	cout << "\nYou Entered: " << DateToString(Date) << "\n";
+	return 0;
+}
+65
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+struct stDate
+{
+	short Year;
+	short Month;
+	short Day;
+};
+vector<string> SplitString(string S1, string Delim)
+{
+	vector<string> vString;
+	short pos = 0;
+	string sWord; 
+	while ((pos = S1.find(Delim)) != std::string::npos)
+	{
+		sWord = S1.substr(0, pos); 
+		if (sWord != "")
+		{
+			vString.push_back(sWord);
+		}
+		S1.erase(0, pos + Delim.length()); 
+	
+	}
+	if (S1 != "")
+	{
+		vString.push_back(S1); 
+	}
+	return vString;
+}
+string ReplaceWordInString(string S1, string StringToReplace,
+	string sRepalceTo)
+{
+	short pos = S1.find(StringToReplace);
+	while (pos != std::string::npos)
+	{
+		S1 = S1.replace(pos, StringToReplace.length(),sRepalceTo);
+		pos = S1.find(StringToReplace);
+	}
+	return S1;
+}
+string DateToString(stDate Date)
+{
+	return to_string(Date.Day) + "/" + to_string(Date.Month) +"/" + to_string(Date.Year);
+}
+stDate StringToDate(string DateString)
+{
+	stDate Date;
+	vector <string> vDate;
+	vDate = SplitString(DateString, "/");
+	Date.Day = stoi(vDate[0]);
+	Date.Month = stoi(vDate[1]);
+	Date.Year = stoi(vDate[2]);
+	return Date;
+}
+string FormateDate(stDate Date, string DateFormat = "dd/mm/yyyy")
+{
+	string FormattedDateString = "";
+	FormattedDateString = ReplaceWordInString(DateFormat, "dd",to_string(Date.Day));
+	FormattedDateString = ReplaceWordInString(FormattedDateString,"mm", to_string(Date.Month));
+	FormattedDateString = ReplaceWordInString(FormattedDateString,"yyyy", to_string(Date.Year));
+	return FormattedDateString;
+}
+string ReadStringDate(string Message)
+{
+	string DateString;
+	cout << Message;
+	getline(cin >> ws, DateString);
+	return DateString;
+}
+int main()
+{
+	string DateString = ReadStringDate("\nPlease Enter Datedd / mm / yyyy ? ");
+		stDate Date = StringToDate(DateString);
+	cout << "\n" << FormateDate(Date) << "\n";
+	cout << "\n" << FormateDate(Date, "yyyy/dd/mm") << "\n";
+	cout << "\n" << FormateDate(Date, "mm/dd/yyyy") << "\n";
+	cout << "\n" << FormateDate(Date, "mm-dd-yyyy") << "\n";
+	cout << "\n" << FormateDate(Date, "dd-mm-yyyy") << "\n";
+	cout << "\n" << FormateDate(Date, "Day:dd, Month:mm,Year:yyyy") << "\n";
+	return 0;
+}
+ 
